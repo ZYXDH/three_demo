@@ -25,10 +25,15 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 4000, //启动端口
     open: true,
-    // proxy: {
-    //   // 选项写法
-    //   '/api': 'http://123.56.85.24:5000', //代理网址
-    // },
+    proxy: {
+      '/api': {
+        target: 'http://localhost:9090/',
+        changeOrigin: true,
+        rewrite: (path) => {
+          return path.replace(/^\/api/, '') // 这就是http-proxy要请求的url,我们基地址实际是没有/api 所以replace掉
+        }
+      }
+    },
     cors: true
   }
 })

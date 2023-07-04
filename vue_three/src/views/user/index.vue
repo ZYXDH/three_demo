@@ -25,6 +25,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js' //引入�
 import { getAssetsFile } from '@/utils/img'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { Light } from 'three'
+import { getPositionList } from '@/api/home'
 //canvas的大小
 // wxshare()
 const state = reactive({
@@ -365,8 +366,9 @@ const animate = () => {
 const toUser = () => {
   router.push('User')
 }
-onMounted(() => {
+onMounted(async() => {
   //***一些代码
+  await getPositionList()
   init()
   // setInterval(()=>{
   //   state.hjLightPower-=0.1
