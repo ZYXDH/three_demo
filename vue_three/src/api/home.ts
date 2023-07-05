@@ -7,3 +7,9 @@ export const getPositionList = () =>
     
     method: 'get'
   })
+  export const addPosition = (data:object) =>
+  axios({
+    url: 'addPosition',
+    data,
+    method: 'get'
+  })

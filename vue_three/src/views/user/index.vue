@@ -25,7 +25,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js' //引入�
 import { getAssetsFile } from '@/utils/img'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { Light } from 'three'
-import { getPositionList } from '@/api/home'
+import { addPosition, getPositionList } from '@/api/home'
 //canvas的大小
 // wxshare()
 const state = reactive({
@@ -78,6 +78,7 @@ const moveObj = (event: any) => {
       break
   }
   outline.setFromObject(newObj)
+
   outline.update()
   renderer.render(scene, camera)
 }
@@ -160,30 +161,11 @@ const init = () => {
     const mesh = new THREE.Mesh(floor, material)
     return mesh
   }
-  function floors() {
+  async function floors() {
     let floorArr = [] as Array<any>
-    const floorConfig = [
-      // 地板
-      { x: 0, y: 0, z: 0 },
-      { x: 0, y: 0, z: baseLength },
-      { x: baseWidth * 1, y: 0, z: baseLength },
-      { x: baseWidth * 1, y: 0, z: 0 },
-      { x: baseWidth * 2, y: 0, z: 0 },
-      { x: baseWidth * 3, y: 0, z: 0 },
-      { x: baseWidth * 2, y: 0, z: baseLength },
-      { x: baseWidth * 3, y: 0, z: baseLength },
-      // 屋顶
-      { x: 0, y: baseHeight, z: 0 },
-      { x: 0, y: baseHeight, z: baseLength },
-      { x: baseWidth * 1, y: baseHeight, z: baseLength },
-      { x: baseWidth * 1, y: baseHeight, z: 0 },
-      { x: baseWidth * 2, y: baseHeight, z: 0 },
-      { x: baseWidth * 3, y: baseHeight, z: 0 },
-      { x: baseWidth * 2, y: baseHeight, z: baseLength },
-      { x: baseWidth * 3, y: baseHeight, z: baseLength }
-    ]
+    const floorConfig = await getPositionList()
 
-    floorConfig.forEach((item, index) => {
+    floorConfig.data.forEach(async (item: { x: any; y: any; z: any }, index: any) => {
       let floorItem = createFloor()
       floorItem.position.set(item.x, item.y, item.z)
       floorItem.name = `地板-${index}`
@@ -368,7 +350,6 @@ const toUser = () => {
 }
 onMounted(async() => {
   //***一些代码
-  await getPositionList()
   init()
   // setInterval(()=>{
   //   state.hjLightPower-=0.1

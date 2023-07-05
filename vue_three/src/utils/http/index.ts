@@ -8,8 +8,6 @@ const instance = axios.create({
   baseURL: '/api', //接口统一域名
   // baseURL: '/api',
   timeout: 10000, //设置超时
-  withCredentials:true,
-  headers: {'Content-Type': 'application/json;charset=utf-8'},
 })
 
 //请求拦截器
